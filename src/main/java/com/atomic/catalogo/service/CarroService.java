@@ -1,19 +1,26 @@
 package com.atomic.catalogo.service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.atomic.catalogo.controller.MotorController;
 import com.atomic.catalogo.dto.CarroDTO;
 import com.atomic.catalogo.entity.Carro;
+import com.atomic.catalogo.entity.Marca;
+import com.atomic.catalogo.entity.Motor;
 import com.atomic.catalogo.repository.CarroRepository;
 import com.atomic.catalogo.repository.MarcaRepository;
 import com.atomic.catalogo.repository.MotorRepository;
 
 @Service
 public class CarroService {
+
+	private final MotorController motorController;
 
 	@Autowired
 	private CarroRepository carroRepository;
@@ -24,18 +31,28 @@ public class CarroService {
 	@Autowired
 	private MotorRepository motorRepository;
 
+	CarroService(MotorController motorController) {
+		this.motorController = motorController;
+	}
+
 	public List<CarroDTO> getAll() {
 		List<Carro> carros = carroRepository.findAll();
 		List<CarroDTO> carrosDTO = carros.stream().map(carro -> CarroDTO.fromCarro(carro)).collect(Collectors.toList());
 		return carrosDTO;
 	}
+	
+	@Transactional
+	public Carro register(CarroDTO carroDTO) {
+		System.out.println("MOTOR "+carroDTO.motor());
+		Motor motor = motorRepository.findById(UUID.fromString(carroDTO.motor()))
+				.orElseThrow(() -> new RuntimeException("Motor não encontrado"));
 
-	public CarroDTO register(CarroDTO carroDTO) {
+		Marca marca = marcaRepository.findByNomeIgnoreCase(carroDTO.marca());
 		Carro carro = Carro.fromDTO(carroDTO);
-		carro.setMarca(marcaRepository.findByNomeIgnoreCase(carroDTO.marca()));
-		carro.setMotor(motorRepository.findById(carroDTO.motor()).get());
+		carro.setMarca(marca);
+		carro.setMotor(motor);
 		carroRepository.saveAndFlush(carro);
-		return CarroDTO.fromCarro(carro);
+		return carro;
 	}
 
 }

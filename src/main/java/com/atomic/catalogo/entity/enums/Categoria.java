@@ -4,11 +4,11 @@ public enum Categoria {
 	ESPORTIVO(4, "Esportivo"), SEDAN(3, "Sedan"), SUV(2, "SUV"), HATCH(1, "Hatch");
 
 	private Integer id;
-	private String descricao;
+	private String name;
 
 	private Categoria(Integer id, String descricao) {
 		this.id = id;
-		this.descricao = descricao;
+		this.name = descricao;
 	}
 
 	public Integer getId() {
@@ -20,23 +20,23 @@ public enum Categoria {
 	}
 
 	public String getDescricao() {
-		return descricao;
+		return name;
 	}
 
 	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+		this.name = descricao;
 	}
 
-	public Categoria toEnum(Integer id) {
-		if (id == null) {
+	public static Categoria toEnum(String name) {
+		if (name == null) {
 			return null;
 		}
 		for (Categoria x : Categoria.values()) {
-			if (id == x.getId()) {
+			if (name.equals(x.getDescricao())) {
 				return x;
 			}
 		}
-		throw new IllegalArgumentException("Id inválido: " + id);
+		throw new IllegalArgumentException("name inválido: " + name);
 	}
 
 }

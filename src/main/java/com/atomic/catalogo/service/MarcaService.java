@@ -1,5 +1,7 @@
 package com.atomic.catalogo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,10 @@ public class MarcaService {
 
 	public Marca register(Marca marca) {
 		return marcaRepository.saveAndFlush(marca);
+	}
+	
+	public List<Marca> getAll() {
+		return marcaRepository.findAll();
 	}
 
 }

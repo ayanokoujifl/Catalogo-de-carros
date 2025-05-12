@@ -8,6 +8,4 @@ import com.atomic.catalogo.entity.Motor;
 
 public interface MotorRepository extends JpaRepository<Motor, UUID>{
 
-	Motor findByTipoIgnoreCase(String tipo);
-	
 }

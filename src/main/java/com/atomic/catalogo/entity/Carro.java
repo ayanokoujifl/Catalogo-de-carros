@@ -1,5 +1,6 @@
 package com.atomic.catalogo.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -10,14 +11,18 @@ import com.atomic.catalogo.entity.enums.Categoria;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Carro implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -36,7 +41,11 @@ public class Carro implements Serializable {
 	@Column(length = 2048)
 	@URL(message = "URL inválida")
 	private String imagem;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "marca",referencedColumnName = "id")
 	private Marca marca;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "motor", referencedColumnName = "id")
 	private Motor motor;
 
 	public static Carro fromDTO(CarroDTO carroDTO) {
@@ -51,7 +60,7 @@ public class Carro implements Serializable {
 		carro.setVelocidadeMaxima(carroDTO.velocidadeMaxima());
 		carro.setDirecao(carroDTO.direcao());
 		carro.setFreios(carroDTO.freios());
-		carro.setCategoria(Categoria.valueOf(carroDTO.categoria()));
+		carro.setCategoria(Categoria.toEnum(carroDTO.categoria()));
 		carro.setImagem(carroDTO.imagem());
 		return carro;
 	}

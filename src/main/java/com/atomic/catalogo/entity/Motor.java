@@ -1,5 +1,6 @@
 package com.atomic.catalogo.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -11,7 +12,8 @@ import jakarta.persistence.Id;
 @Entity
 public class Motor implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
