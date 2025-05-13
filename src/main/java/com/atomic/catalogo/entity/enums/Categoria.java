@@ -1,7 +1,7 @@
 package com.atomic.catalogo.entity.enums;
 
 public enum Categoria {
-	ESPORTIVO(4, "Esportivo"), SEDAN(3, "Sedan"), SUV(2, "SUV"), HATCH(1, "Hatch");
+	ESPORTIVO(4, "Esportivo"), SEDAN(3, "Sedan"), SUV(2, "SUV"), HATCH(1, "Hatch"),PICAPE(5, "Picape"),HIPERCARRO(6,"Hipercarro");
 
 	private Integer id;
 	private String name;

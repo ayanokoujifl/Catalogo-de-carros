@@ -69,11 +69,10 @@ public class Carro implements Serializable {
 	public Carro() {
 	}
 
-	public Carro(UUID id, String modelo, String ano, String descricao, String combustivel, String tipoTransmissao,
+	public Carro(String modelo, String ano, String descricao, String combustivel, String tipoTransmissao,
 			String tracao, Integer marchas, Integer velocidadeMaxima, String direcao, String freios,
 			Categoria categoria, String imagem, Marca marca, Motor motor) {
 		super();
-		this.id = id;
 		this.modelo = modelo;
 		this.ano = ano;
 		this.descricao = descricao;
