@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.atomic.catalogo.controller.MotorController;
 import com.atomic.catalogo.dto.CarroDTO;
 import com.atomic.catalogo.entity.Carro;
 import com.atomic.catalogo.entity.Marca;
@@ -20,8 +19,6 @@ import com.atomic.catalogo.repository.MotorRepository;
 @Service
 public class CarroService {
 
-	private final MotorController motorController;
-
 	@Autowired
 	private CarroRepository carroRepository;
 
@@ -31,19 +28,15 @@ public class CarroService {
 	@Autowired
 	private MotorRepository motorRepository;
 
-	CarroService(MotorController motorController) {
-		this.motorController = motorController;
-	}
-
 	public List<CarroDTO> getAll() {
 		List<Carro> carros = carroRepository.findAll();
 		List<CarroDTO> carrosDTO = carros.stream().map(carro -> CarroDTO.fromCarro(carro)).collect(Collectors.toList());
 		return carrosDTO;
 	}
-	
+
 	@Transactional
 	public Carro register(CarroDTO carroDTO) {
-		System.out.println("MOTOR "+carroDTO.motor());
+		System.out.println("MOTOR " + carroDTO.motor());
 		Motor motor = motorRepository.findById(UUID.fromString(carroDTO.motor()))
 				.orElseThrow(() -> new RuntimeException("Motor não encontrado"));
 
@@ -53,6 +46,28 @@ public class CarroService {
 		carro.setMotor(motor);
 		carroRepository.saveAndFlush(carro);
 		return carro;
+	}
+
+	public void delete(UUID id) {
+		Carro obj = carroRepository.findById(id).orElse(null);
+		if (obj == null) {
+			throw new RuntimeException("Marca não encontrada");
+		} else {
+			carroRepository.delete(obj);
+		}
+	}
+
+	public Carro getById(UUID id) {
+		Carro obj = carroRepository.findById(id).orElseThrow(() -> new RuntimeException("Carro não encontrada"));
+		return obj;
+	}
+
+	@Transactional
+	public Carro update(Carro carro, UUID id) {
+		Carro obj = carroRepository.findById(id).orElseThrow(() -> new RuntimeException("Carro não encontrada"));
+		obj = carro;
+		obj.setId(id);
+		return carroRepository.saveAndFlush(obj);
 	}
 
 }
