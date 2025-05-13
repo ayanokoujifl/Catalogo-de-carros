@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.atomic.catalogo.entity.Marca;
 import com.atomic.catalogo.repository.MarcaRepository;
+import com.atomic.catalogo.service.exception.ObjectNotFoundException;
 
 @Service
 public class MarcaService {
@@ -27,20 +28,20 @@ public class MarcaService {
 	public void delete(Integer id) {
 		Marca obj = marcaRepository.findById(id).orElse(null);
 		if (obj == null) {
-			throw new RuntimeException("Marca não encontrada");
+			throw new ObjectNotFoundException("Marca não encontrada na base de dados");
 		} else {
 			marcaRepository.delete(obj);
 		}
 	}
 
 	public Marca getById(Integer id) {
-		Marca obj = marcaRepository.findById(id).orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+		Marca obj = marcaRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Marca não encontrada na base de dados"));
 		return obj;
 	}
 
 	@Transactional
 	public Marca update(Marca marca, Integer id) {
-		Marca obj = marcaRepository.findById(id).orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+		Marca obj = marcaRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Marca não encontrada na base de dados"));
 		obj.setNome(marca.getNome());
 		obj.setAnoFundacao(marca.getAnoFundacao());
 		obj.setPaisOrigem(marca.getPaisOrigem());
