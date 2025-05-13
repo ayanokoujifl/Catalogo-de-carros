@@ -28,7 +28,7 @@ public class CarroControler {
 	private CarroService service;
 
 	@PostMapping
-	public ResponseEntity<CarroDTO> cadastrar(@RequestBody CarroDTO carroDTO) {
+	public ResponseEntity<CarroDTO> register(@RequestBody CarroDTO carroDTO) {
 		Carro carro = service.register(carroDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(carro.getId().toString()).toUri();
@@ -46,8 +46,8 @@ public class CarroControler {
 		return ResponseEntity.ok(service.getById(id));
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Void> delete(@RequestBody UUID id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable UUID id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}

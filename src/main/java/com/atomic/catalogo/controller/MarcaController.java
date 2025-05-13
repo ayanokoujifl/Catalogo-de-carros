@@ -24,7 +24,7 @@ public class MarcaController {
 	private MarcaService service;
 
 	@PostMapping
-	public ResponseEntity<Marca> cadastrar(@RequestBody Marca marca) {
+	public ResponseEntity<Marca> register(@RequestBody Marca marca) {
 		return ResponseEntity.ok(service.register(marca));
 	}
 
@@ -38,8 +38,8 @@ public class MarcaController {
 		return ResponseEntity.ok(service.getById(id));
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Void> delete(@RequestBody Integer id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}

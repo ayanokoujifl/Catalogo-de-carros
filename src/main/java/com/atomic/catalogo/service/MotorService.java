@@ -28,14 +28,14 @@ public class MotorService {
 	public void delete(UUID id) {
 		Motor obj = motorRepository.findById(id).orElse(null);
 		if (obj == null) {
-			throw new RuntimeException("Marca não encontrada");
+			throw new RuntimeException("Motor não encontrado");
 		} else {
 			motorRepository.delete(obj);
 		}
 	}
 
 	public Motor getById(UUID id) {
-		Motor obj = motorRepository.findById(id).orElseThrow(() -> new RuntimeException("Motor não encontrada"));
+		Motor obj = motorRepository.findById(id).orElseThrow(() -> new RuntimeException("Motor não encontrado"));
 		return obj;
 	}
 
