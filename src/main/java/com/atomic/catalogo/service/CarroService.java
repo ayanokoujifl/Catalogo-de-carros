@@ -37,7 +37,6 @@ public class CarroService {
 
 	@Transactional
 	public Carro register(CarroDTO carroDTO) {
-		System.out.println("MOTOR " + carroDTO.motor());
 		Motor motor = motorRepository.findById(UUID.fromString(carroDTO.motor())).orElseThrow(
 				() -> new ObjectNotFoundException("O Motor especificado não foi encontrado em nossa base"));
 

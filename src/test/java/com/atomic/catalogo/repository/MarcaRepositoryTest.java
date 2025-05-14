@@ -21,7 +21,7 @@ public class MarcaRepositoryTest {
 	
 	@Test
 	@DisplayName("Deve retornar uma marca quando o nome existir, ignorando diferenças de case")
-    void findByNomeIgnoreCase_deveRetornarMarca_quandoNomeExistirIgnorandoCase() {
+    void findByNomeIgnoreCaseCase1() {
         // Arrange: salvar uma marca no banco de teste
         Marca marca = new Marca();
         marca.setNome("Volkswagen");
@@ -37,7 +37,7 @@ public class MarcaRepositoryTest {
 
     @Test
     @DisplayName("Deve retornar vazio quando o nome não existir, ignorando diferenças de case")
-    void findByNomeIgnoreCase_deveRetornarVazio_quandoMarcaNaoExistir() {
+    void findByNomeIgnoreCaseCase2() {
         Optional<Marca> resultado = marcaRepository.findByNomeIgnoreCase("MarcaInexistente");
         assertThat(resultado).isEmpty();
     }

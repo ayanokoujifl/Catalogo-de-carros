@@ -11,8 +11,8 @@ import jakarta.persistence.Id;
 @Entity
 public class Marca implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,17 @@ public class Marca implements Serializable {
 	private String nome;
 	private String paisOrigem;
 	private String anoFundacao;
+
+	public Marca() {
+	}
+
+	public Marca(Integer id, String nome, String paisOrigem, String anoFundacao) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.paisOrigem = paisOrigem;
+		this.anoFundacao = anoFundacao;
+	}
 
 	public Integer getId() {
 		return id;
