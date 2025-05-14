@@ -28,8 +28,8 @@ public class Motor implements Serializable {
 	public Motor() {
 	}
 	
-	public Motor(String tipo, Integer cilindros, Integer valvulas, Integer potencia, Integer torque, String combustivel,
-			String tipoTransmissao, String tracao, String aspiracao) {
+	public Motor(String tipo, Integer cilindros, Integer valvulas, Integer potencia, Integer torque,
+			String aspiracao) {
 		super();
 		this.tipo = tipo;
 		this.cilindros = cilindros;
