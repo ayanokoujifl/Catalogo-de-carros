@@ -91,8 +91,6 @@ public class CarroServiceTest {
 		assertThatThrownBy(() -> carroService.register(carroDTO))
 			.isInstanceOf(ObjectNotFoundException.class)
 			.hasMessage("O Motor especificado não foi encontrado em nossa base");
-		
-		
 	}
 
 }
