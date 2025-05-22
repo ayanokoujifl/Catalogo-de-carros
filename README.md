@@ -30,12 +30,12 @@ Esta API RESTful permite gerenciar um catálogo de carros, incluindo marcas, mot
 2. Crie o arquivo `.env` com as variáveis de ambiente:
 
    ```env
-   POSTGRES_DB=catalogo_hml
-   POSTGRES_USER=hml_user
-   POSTGRES_PASSWORD=senha_segura
-   SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/catalogo_hml
-   SPRING_DATASOURCE_USERNAME=hml_user
-   SPRING_DATASOURCE_PASSWORD=senha_segura
+      SPRING_PROFILES_ACTIVE=hml
+      DB_HOST=mysql
+      DB_PORT=3306
+      DB_NAME=catalogo_hml
+      DB_USERNAME=app_user
+      DB_PASSWORD=app_password
    ```
 
 3. Execute o Docker Compose:
