@@ -64,12 +64,12 @@ services:
     build: .
     container_name: catalogo_hml
     environment:
-      - SPRING_PROFILES_ACTIVE: hml
-      - DB_HOST: mysql
-      - DB_PORT: 3306
-      - DB_NAME: carros_db
-      - DB_USERNAME: <seu_user/>
-      - DB_PASSWORD: <sua_senha/>
+      SPRING_PROFILES_ACTIVE: hml
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: carros_db
+      DB_USERNAME: <seu_user/>
+      DB_PASSWORD: <sua_senha/>
     ports:
       - "8080:8080"
     depends_on:
