@@ -33,7 +33,7 @@ Esta API RESTful permite gerenciar um catálogo de carros, incluindo marcas, mot
       SPRING_PROFILES_ACTIVE=hml
       DB_HOST=mysql
       DB_PORT=3306
-      DB_NAME=catalogo_hml
+      DB_NAME=carros_db
       DB_USERNAME=app_user
       DB_PASSWORD=app_password
    ```
