@@ -43,8 +43,9 @@ public class CarroControler {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Carro> getById(@PathVariable UUID id) {
-		return ResponseEntity.ok(service.getById(id));
+	public ResponseEntity<Carro> getById(@PathVariable String id) {
+		UUID uuid = UUID.fromString(id);
+		return ResponseEntity.ok(service.getById(uuid));
 	}
 
 	@DeleteMapping("/{id}")

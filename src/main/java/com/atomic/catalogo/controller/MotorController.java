@@ -41,8 +41,9 @@ public class MotorController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Motor> getById(@PathVariable UUID id) {
-		return ResponseEntity.ok(service.getById(id));
+	public ResponseEntity<Motor> getById(@PathVariable String id) {
+		UUID uuid = UUID.fromString(id);
+		return ResponseEntity.ok(service.getById(uuid));
 	}
 
 	@DeleteMapping("/{id}")
