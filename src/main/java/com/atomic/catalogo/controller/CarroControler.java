@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.atomic.catalogo.dto.CarroDTO;
 import com.atomic.catalogo.entity.Carro;
 import com.atomic.catalogo.service.CarroService;
+import com.atomic.catalogo.service.exception.ObjectNotFoundException;
 
 @RestController
 @RequestMapping("/carros")
@@ -43,9 +44,19 @@ public class CarroControler {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Carro> getById(@PathVariable String id) {
-		UUID uuid = UUID.fromString(id);
-		return ResponseEntity.ok(service.getById(uuid));
+	public ResponseEntity<CarroDTO> getById(@PathVariable String id) {
+		if (id == null || id.isEmpty()) {
+			return ResponseEntity.badRequest().build();
+		}
+		UUID uuid;
+		try {
+			uuid = UUID.fromString(id);
+		} catch (IllegalArgumentException e) {
+			throw new ObjectNotFoundException(id + " não é um UUID válido. Por favor, verifique o ID informado.");
+		}
+		Carro obj = service.getById(uuid);
+		CarroDTO carroDTO = CarroDTO.fromCarro(obj);
+		return ResponseEntity.ok(carroDTO);
 	}
 
 	@DeleteMapping("/{id}")

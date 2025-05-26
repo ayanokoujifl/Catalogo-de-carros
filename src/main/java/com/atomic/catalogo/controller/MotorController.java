@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.atomic.catalogo.entity.Motor;
 import com.atomic.catalogo.service.MotorService;
+import com.atomic.catalogo.service.exception.ObjectNotFoundException;
 
 @RestController
 @RequestMapping("/motores")
@@ -42,7 +43,15 @@ public class MotorController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Motor> getById(@PathVariable String id) {
-		UUID uuid = UUID.fromString(id);
+		if (id == null || id.isEmpty()) {
+			return ResponseEntity.badRequest().build();
+		}
+		UUID uuid;
+		try {
+			uuid = UUID.fromString(id);
+		} catch (IllegalArgumentException e) {
+			throw new ObjectNotFoundException(id + " não é um UUID válido. Por favor, verifique o ID informado.");
+		}
 		return ResponseEntity.ok(service.getById(uuid));
 	}
 
