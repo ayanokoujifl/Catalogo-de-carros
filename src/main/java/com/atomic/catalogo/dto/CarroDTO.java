@@ -6,7 +6,7 @@ public record CarroDTO(String id, String modelo, String ano, String descricao, S
 		String tipoTransmissao, String tracao, Integer marchas, Integer velocidadeMaxima, String direcao, String freios,
 		String categoria, String imagem, String marca, String motor) {
 
-	public static CarroDTO fromCarro(Carro carro, String marca, String motor) {
+	public static CarroDTO fromCarro(Carro carro) {
 		String id = carro.getId() != null ? carro.getId().toString() : null;
 		String modelo = carro.getModelo();
 		String ano = carro.getAno();
@@ -20,8 +20,8 @@ public record CarroDTO(String id, String modelo, String ano, String descricao, S
 		String freios = carro.getFreios();
 		String categoria = carro.getCategoria().getDescricao();
 		String imagem = carro.getImagem();
-		String marcaNome = marca;
-		String motorId = motor;
+		String marcaNome = carro.getMarca() != null ? carro.getMarca().getNome() : null;
+		String motorId = carro.getMotor() != null ? carro.getMotor().getId().toString() : null;
 		return new CarroDTO(id, modelo, ano, descricao, combustivel, tipoTransmissao, tracao, marchas, velocidadeMaxima,
 				direcao, freios, categoria, imagem, marcaNome, motorId);
 	}

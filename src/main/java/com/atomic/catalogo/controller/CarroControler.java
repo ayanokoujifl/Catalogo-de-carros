@@ -18,16 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.atomic.catalogo.dto.CarroDTO;
-import com.atomic.catalogo.entity.Carro;
 import com.atomic.catalogo.service.CarroService;
+import com.atomic.catalogo.service.MotorService;
 import com.atomic.catalogo.service.exception.ObjectNotFoundException;
 
 @RestController
 @RequestMapping("/carros")
 public class CarroControler {
 
+	private final MotorService motorService;
+
+	private final MotorController motorController;
+
 	@Autowired
 	private CarroService service;
+
+	CarroControler(MotorController motorController, MotorService motorService) {
+		this.motorController = motorController;
+		this.motorService = motorService;
+	}
 
 	@PostMapping
 	public ResponseEntity<CarroDTO> register(@RequestBody CarroDTO carroDTO) {
@@ -54,8 +63,14 @@ public class CarroControler {
 			throw new ObjectNotFoundException(id + " não é um UUID válido. Por favor, verifique o ID informado.");
 		}
 
+		System.out.println(uuid);
 		CarroDTO carroDTO = service.getById(uuid);
-		return ResponseEntity.ok(carroDTO);
+		try {
+			return ResponseEntity.ok(carroDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@DeleteMapping("/{id}")
