@@ -6,10 +6,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-<<<<<<< HEAD
-import org.springframework.http.HttpStatusCode;
-=======
->>>>>>> 714f8d7fb30ca611ba43d71428f58476c3488181
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
