@@ -41,10 +41,10 @@ public class Carro implements Serializable {
 	@Column(length = 2048)
 	@URL(message = "URL inválida")
 	private String imagem;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "marca",referencedColumnName = "id")
 	private Marca marca;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "motor", referencedColumnName = "id")
 	private Motor motor;
 
