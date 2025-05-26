@@ -31,9 +31,8 @@ public class CarroControler {
 
 	@PostMapping
 	public ResponseEntity<CarroDTO> register(@RequestBody CarroDTO carroDTO) {
-		Carro carro = service.register(carroDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(carro.getId().toString()).toUri();
+		CarroDTO carro = service.register(carroDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(carro.id()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
@@ -45,7 +44,7 @@ public class CarroControler {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CarroDTO> getById(@PathVariable String id) {
-		if (id == null || id.isEmpty()) {
+		if (id == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		UUID uuid;
@@ -54,8 +53,8 @@ public class CarroControler {
 		} catch (IllegalArgumentException e) {
 			throw new ObjectNotFoundException(id + " não é um UUID válido. Por favor, verifique o ID informado.");
 		}
-		Carro obj = service.getById(uuid);
-		CarroDTO carroDTO = CarroDTO.fromCarro(obj);
+
+		CarroDTO carroDTO = service.getById(uuid);
 		return ResponseEntity.ok(carroDTO);
 	}
 
@@ -66,7 +65,7 @@ public class CarroControler {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Carro> update(@RequestBody Carro carro, @PathVariable UUID id) {
+	public ResponseEntity<CarroDTO> update(@RequestBody CarroDTO carro, @PathVariable UUID id) {
 		return ResponseEntity.status(HttpStatus.OK).body(service.update(carro, id));
 	}
 

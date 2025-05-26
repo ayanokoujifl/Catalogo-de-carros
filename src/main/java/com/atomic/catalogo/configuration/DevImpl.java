@@ -29,7 +29,7 @@ public class DevImpl {
 	private CarroRepository carroRepo;
 
     @Bean
-    void initDatabase() throws Exception {
+    Integer initDatabase() throws Exception {
 			// Inserir Marcas
 			Marca volkswagen = new Marca();
 			volkswagen.setNome("Volkswagen");
@@ -230,6 +230,7 @@ public class DevImpl {
 			// Salvar os carros no banco de dados
 			carroRepo.saveAllAndFlush(Arrays.asList(gol, tiguan, argo, toro, ka, mustang, onix, camaro, a3, r8, serie3, m5,
 					f8Tributo, huracan, chiron, cayenne, gt3rs));
+			return 0;
 
 	}
 	

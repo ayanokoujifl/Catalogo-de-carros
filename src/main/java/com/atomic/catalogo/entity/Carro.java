@@ -47,6 +47,7 @@ public class Carro implements Serializable {
 	private String imagem;
 	@ManyToOne
 	@JoinColumn(name = "marca",referencedColumnName = "id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Marca marca;
 	@ManyToOne
 	@JoinColumn(name = "motor", referencedColumnName = "id")
