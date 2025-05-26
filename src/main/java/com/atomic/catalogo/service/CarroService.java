@@ -59,8 +59,7 @@ public class CarroService {
 	}
 
 	public Carro getById(UUID id) {
-		Carro obj = carroRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
-		return obj;
+		return carroRepository.findByIdWithAssociations(id).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
 	}
 
 	@Transactional

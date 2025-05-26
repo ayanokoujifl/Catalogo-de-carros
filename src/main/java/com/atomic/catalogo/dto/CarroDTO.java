@@ -20,8 +20,8 @@ public record CarroDTO(String id, String modelo, String ano, String descricao, S
 		String freios = carro.getFreios();
 		String categoria = carro.getCategoria().getDescricao();
 		String imagem = carro.getImagem();
-		String marca = carro.getMarca().getNome() != null ? carro.getMarca().getNome() : null;
-		String motor = carro.getMotor().getId().toString();
+		String marca = carro.getMarca() != null ? carro.getMarca().getNome() : null;
+		String motor = carro.getMotor() != null ? carro.getMotor().getId().toString() : null;
 
 		return new CarroDTO(id, modelo, ano, descricao, combustivel, tipoTransmissao, tracao, marchas, velocidadeMaxima,
 				direcao, freios, categoria, imagem, marca, motor);
