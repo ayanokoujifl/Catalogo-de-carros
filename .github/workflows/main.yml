@@ -28,6 +28,7 @@ jobs:
   push:
     name: Push to docker hub
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Build Docker image
         run: docker build -t ayanokoujifl/catalogo-de-carros:latest .
@@ -43,10 +44,11 @@ jobs:
   deploy:
     name: Deploy no Railway
     runs-on: ubuntu-latest
+    needs: push
     container: ghcr.io/railwayapp/cli:latest
     env:
           RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT : ${{secrets.RAILWAY_PROJECT}}
+          RAILWAY_PROJECT: ${{secrets.RAILWAY_PROJECT}}
     steps:
        - uses: actions/checkout@v3
        - run: railway up --service=${{ env.RAILWAY_PROJECT }}
