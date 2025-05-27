@@ -37,3 +37,13 @@ jobs:
 
       - name: Push da imagem para o Docker Hub
         run: docker push ayanokoujifl/catalogo-de-carros:latest
+
+      - name: Instalar Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Deploy automático no Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway login --token $RAILWAY_TOKEN
+          railway up --service catalogo-de-carros
