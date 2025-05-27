@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,13 +32,6 @@ public class CarroService {
 	@Transactional(readOnly = true)
 	public List<CarroDTO> getAll() {
 		List<Carro> carros = carroRepository.findAll();
-
-		// Inicializar relações lazy
-		carros.forEach(carro -> {
-			Hibernate.initialize(carro.getMarca());
-			Hibernate.initialize(carro.getMotor());
-		});
-
 		return carros.stream().map(carro -> CarroDTO.fromCarro(carro)).collect(Collectors.toList());
 	}
 
@@ -54,7 +46,7 @@ public class CarroService {
 		Carro carro = Carro.fromDTO(obj);
 		carro.setMotor(motor);
 		carro.setMarca(marca);
-		carroRepository.save(carro); // Substituído saveAndFlush por save
+		carroRepository.save(carro);
 		return obj;
 	}
 
@@ -71,18 +63,13 @@ public class CarroService {
 	public CarroDTO getById(UUID id) {
 		Carro obj = carroRepository.findByIdWithAssociations(id)
 				.orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
-
-		// Garantir que as relações lazy estão inicializadas
-		Hibernate.initialize(obj.getMarca());
-		Hibernate.initialize(obj.getMotor());
-
 		return CarroDTO.fromCarro(obj);
 	}
 
 	@Transactional
 	public CarroDTO update(CarroDTO carro, UUID id) {
 		Carro obj = carroRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
-		carroRepository.save(obj); // Substituído saveAndFlush por save
+		carroRepository.save(obj);
 		return CarroDTO.fromCarro(obj);
 	}
 }
