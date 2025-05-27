@@ -44,5 +44,6 @@ jobs:
       - name: Deploy automático no Railway
         env:
           RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT : ${{secrets.RAILWAY_PROJECT}}
         run: |
-          railway up --service catalogo-de-carros
+          railway up --project $RAILWAY_PROJECT --service catalogo-de-carros
