@@ -50,8 +50,7 @@ jobs:
     container: ghcr.io/railwayapp/cli:latest
     env:
       RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      RAILWAY_PROJECT: ${{ secrets.RAILWAY_PROJECT }}
+      SVC_ID: ${{ secrets.RAILWAY_PROJECT }}
     steps:
       - uses: actions/checkout@v3
-      - run: railway link -p catalogo-de-carros -s catalogo-de-carros
-      - run: railway up --service=${{ env.RAILWAY_PROJECT }}
+      - run: railway up --project=${{ env.SVC_ID }} --service=catalogo-de-carros
