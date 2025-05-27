@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  build-and-push:
-    name: Build, Test, Dockerize and Push
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,10 @@ jobs:
 
       - name: Rodar testes
         run: mvn test
-
+  push:
+    name: Push to docker hub
+    runs-on: ubuntu-latest
+    steps:
       - name: Build Docker image
         run: docker build -t ayanokoujifl/catalogo-de-carros:latest .
 
@@ -37,13 +40,13 @@ jobs:
 
       - name: Push da imagem para o Docker Hub
         run: docker push ayanokoujifl/catalogo-de-carros:latest
-
-      - name: Instalar Railway CLI
-        run: curl -fsSL https://railway.app/install.sh | sh
-
-      - name: Deploy automático no Railway
-        env:
+  deploy:
+    name: Deploy no Railway
+    runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
+    env:
           RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_PROJECT : ${{secrets.RAILWAY_PROJECT}}
-        run: |
-          railway up -- --project $RAILWAY_PROJECT --service catalogo-de-carros
+    steps:
+       - uses: actions/checkout@v3
+       - run: railway up --service=${{ env.RAILWAY_PROJECT }}
