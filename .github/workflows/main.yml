@@ -53,4 +53,4 @@ jobs:
       SVC_ID: ${{ secrets.RAILWAY_PROJECT }}
     steps:
       - uses: actions/checkout@v3
-      - run: railway up --project=${{ env.SVC_ID }} --service=catalogo-de-carros
+      - run: railway up -- --project=${{ env.SVC_ID }} --service=catalogo-de-carros
