@@ -53,4 +53,4 @@ jobs:
       RAILWAY_PROJECT: ${{ secrets.RAILWAY_PROJECT }}
     steps:
       - uses: actions/checkout@v3
-      - run: railway up -- --project=${{ env.RAILWAY_PROJECT }} --service=catalogo-de-carros
+      - run: railway up --service=${{ env.RAILWAY_PROJECT }}
