@@ -50,7 +50,7 @@ jobs:
     container: ghcr.io/railwayapp/cli:latest
     env:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      SVC_ID: ${{ secrets.RAILWAY_PROJECT }}
+      SVC_ID: ${{ secrets.SVC_ID }}
     steps:
       - uses: actions/checkout@v3
       - run: railway up --service=${{ env.SVC_ID }}
