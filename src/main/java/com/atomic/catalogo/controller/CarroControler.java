@@ -14,29 +14,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.atomic.catalogo.dto.CarroDTO;
 import com.atomic.catalogo.service.CarroService;
-import com.atomic.catalogo.service.MotorService;
 import com.atomic.catalogo.service.exception.ObjectNotFoundException;
 
 @RestController
 @RequestMapping("/carros")
 public class CarroControler {
 
-	private final MotorService motorService;
-
-	private final MotorController motorController;
-
 	@Autowired
 	private CarroService service;
-
-	CarroControler(MotorController motorController, MotorService motorService) {
-		this.motorController = motorController;
-		this.motorService = motorService;
-	}
 
 	@PostMapping
 	public ResponseEntity<CarroDTO> register(@RequestBody CarroDTO carroDTO) {
@@ -84,4 +75,12 @@ public class CarroControler {
 		return ResponseEntity.status(HttpStatus.OK).body(service.update(carro, id));
 	}
 
+	@GetMapping("/motor")
+	public ResponseEntity<List<CarroDTO>> getByMotorTipo(@RequestParam String tipo) {
+		if (tipo == null || tipo.isEmpty()) {
+			return ResponseEntity.badRequest().build();
+		}
+		List<CarroDTO> carros = service.getByMotorTipo(tipo);
+		return ResponseEntity.ok(carros);
+	}
 }

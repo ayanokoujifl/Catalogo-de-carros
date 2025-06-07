@@ -66,10 +66,21 @@ public class CarroService {
 		return CarroDTO.fromCarro(obj);
 	}
 
-	@Transactional
+
 	public CarroDTO update(CarroDTO carro, UUID id) {
 		Carro obj = carroRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
 		carroRepository.save(obj);
 		return CarroDTO.fromCarro(obj);
+	}
+	
+	public List<CarroDTO> getByMotorTipo(String tipo) {
+		List<CarroDTO> carros = carroRepository.findByMotorTipoContainingIgnoreCase(tipo).stream()
+				.map(carro -> CarroDTO.fromCarro(carro))
+				.collect(Collectors.toList());
+		if (carros.isEmpty()) {
+			throw new ObjectNotFoundException("Nenhum carro encontrado com o tipo de motor: " + tipo);
+		}
+		return carros;
+	
 	}
 }

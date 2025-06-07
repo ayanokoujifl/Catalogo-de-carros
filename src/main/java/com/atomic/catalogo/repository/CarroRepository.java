@@ -1,5 +1,6 @@
 package com.atomic.catalogo.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,5 +17,6 @@ public interface CarroRepository extends JpaRepository<Carro, UUID>{
 	@Query("SELECT c FROM Carro c JOIN FETCH c.marca JOIN FETCH c.motor WHERE c.id = :id")
 	Optional<Carro> findByIdWithAssociations(@Param("id") UUID id);
 
+	List<Carro> findByMotorTipoContainingIgnoreCase(String tipo);
 	
 }
