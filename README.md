@@ -30,13 +30,60 @@ Esta API RESTful permite gerenciar um catálogo de carros, incluindo marcas, mot
 2. Crie o arquivo `.env` com as variáveis de ambiente:
 
    ```env
-   POSTGRES_DB=catalogo_hml
-   POSTGRES_USER=hml_user
-   POSTGRES_PASSWORD=senha_segura
-   SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/catalogo_hml
-   SPRING_DATASOURCE_USERNAME=hml_user
-   SPRING_DATASOURCE_PASSWORD=senha_segura
+      SPRING_PROFILES_ACTIVE: hml
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: carros_db
+      DB_USERNAME: <seu_user/>
+      DB_PASSWORD: <sua_senha/>
    ```
+2.1 Sugestão de arquivo `docker-compose.yml`:
+```env
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_hml
+    environment:
+      MYSQL_DATABASE: carros_db
+      MYSQL_ROOT_PASSWORD: ####
+      MYSQL_USER: <seu_user/>
+      MYSQL_PASSWORD: <sua_senha/>
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - catalogo-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  catalogo-api:
+    build: .
+    container_name: catalogo_hml
+    environment:
+      SPRING_PROFILES_ACTIVE: hml
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: carros_db
+      DB_USERNAME: <seu_user/>
+      DB_PASSWORD: <sua_senha/>
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - catalogo-network
+
+volumes:
+  mysql_data:
+
+networks:
+  catalogo-network:
+```
 
 3. Execute o Docker Compose:
 

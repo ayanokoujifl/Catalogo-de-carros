@@ -8,16 +8,19 @@ import org.hibernate.validator.constraints.URL;
 
 import com.atomic.catalogo.dto.CarroDTO;
 import com.atomic.catalogo.entity.enums.Categoria;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class Carro implements Serializable {
 
@@ -37,14 +40,16 @@ public class Carro implements Serializable {
 	private Integer velocidadeMaxima;
 	private String direcao;
 	private String freios;
+	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
 	@Column(length = 2048)
 	@URL(message = "URL inválida")
 	private String imagem;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "marca",referencedColumnName = "id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Marca marca;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "motor", referencedColumnName = "id")
 	private Motor motor;
 

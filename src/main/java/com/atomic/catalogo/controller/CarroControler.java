@@ -18,21 +18,30 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.atomic.catalogo.dto.CarroDTO;
-import com.atomic.catalogo.entity.Carro;
 import com.atomic.catalogo.service.CarroService;
+import com.atomic.catalogo.service.MotorService;
+import com.atomic.catalogo.service.exception.ObjectNotFoundException;
 
 @RestController
 @RequestMapping("/carros")
 public class CarroControler {
 
+	private final MotorService motorService;
+
+	private final MotorController motorController;
+
 	@Autowired
 	private CarroService service;
 
+	CarroControler(MotorController motorController, MotorService motorService) {
+		this.motorController = motorController;
+		this.motorService = motorService;
+	}
+
 	@PostMapping
 	public ResponseEntity<CarroDTO> register(@RequestBody CarroDTO carroDTO) {
-		Carro carro = service.register(carroDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(carro.getId().toString()).toUri();
+		CarroDTO carro = service.register(carroDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(carro.id()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
@@ -43,8 +52,25 @@ public class CarroControler {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Carro> getById(@PathVariable UUID id) {
-		return ResponseEntity.ok(service.getById(id));
+	public ResponseEntity<CarroDTO> getById(@PathVariable String id) {
+		if (id == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		UUID uuid;
+		try {
+			uuid = UUID.fromString(id);
+		} catch (IllegalArgumentException e) {
+			throw new ObjectNotFoundException(id + " não é um UUID válido. Por favor, verifique o ID informado.");
+		}
+
+		System.out.println(uuid);
+		CarroDTO carroDTO = service.getById(uuid);
+		try {
+			return ResponseEntity.ok(carroDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@DeleteMapping("/{id}")
@@ -54,7 +80,7 @@ public class CarroControler {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Carro> update(@RequestBody Carro carro, @PathVariable UUID id) {
+	public ResponseEntity<CarroDTO> update(@RequestBody CarroDTO carro, @PathVariable UUID id) {
 		return ResponseEntity.status(HttpStatus.OK).body(service.update(carro, id));
 	}
 

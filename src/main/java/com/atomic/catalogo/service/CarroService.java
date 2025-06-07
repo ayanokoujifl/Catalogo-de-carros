@@ -29,24 +29,25 @@ public class CarroService {
 	@Autowired
 	private MotorRepository motorRepository;
 
+	@Transactional(readOnly = true)
 	public List<CarroDTO> getAll() {
 		List<Carro> carros = carroRepository.findAll();
-		List<CarroDTO> carrosDTO = carros.stream().map(carro -> CarroDTO.fromCarro(carro)).collect(Collectors.toList());
-		return carrosDTO;
+		return carros.stream().map(carro -> CarroDTO.fromCarro(carro)).collect(Collectors.toList());
 	}
 
 	@Transactional
-	public Carro register(CarroDTO carroDTO) {
-		Motor motor = motorRepository.findById(UUID.fromString(carroDTO.motor())).orElseThrow(
+	public CarroDTO register(CarroDTO obj) {
+		Motor motor = motorRepository.findById(UUID.fromString(obj.motor())).orElseThrow(
 				() -> new ObjectNotFoundException("O Motor especificado não foi encontrado em nossa base"));
 
-		Marca marca = marcaRepository.findByNomeIgnoreCase(carroDTO.marca()).orElseThrow(
+		Marca marca = marcaRepository.findByNomeIgnoreCase(obj.marca()).orElseThrow(
 				() -> new ObjectNotFoundException("A Marca especificada não foi encontrada em nossa base"));
-		Carro carro = Carro.fromDTO(carroDTO);
-		carro.setMarca(marca);
+
+		Carro carro = Carro.fromDTO(obj);
 		carro.setMotor(motor);
-		carroRepository.saveAndFlush(carro);
-		return carro;
+		carro.setMarca(marca);
+		carroRepository.save(carro);
+		return obj;
 	}
 
 	public void delete(UUID id) {
@@ -58,17 +59,17 @@ public class CarroService {
 		}
 	}
 
-	public Carro getById(UUID id) {
-		Carro obj = carroRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
-		return obj;
+	@Transactional(readOnly = true)
+	public CarroDTO getById(UUID id) {
+		Carro obj = carroRepository.findByIdWithAssociations(id)
+				.orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
+		return CarroDTO.fromCarro(obj);
 	}
 
 	@Transactional
-	public Carro update(Carro carro, UUID id) {
+	public CarroDTO update(CarroDTO carro, UUID id) {
 		Carro obj = carroRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
-		obj = carro;
-		obj.setId(id);
-		return carroRepository.saveAndFlush(obj);
+		carroRepository.save(obj);
+		return CarroDTO.fromCarro(obj);
 	}
-
 }

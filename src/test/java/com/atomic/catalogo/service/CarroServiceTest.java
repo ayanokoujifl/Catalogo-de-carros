@@ -34,18 +34,18 @@ public class CarroServiceTest {
 
 	// Mocks
 	@Mock
-	private CarroRepository carroRepository;
+	CarroRepository carroRepository;
 
 	@Mock
-	private MarcaRepository marcaRepository;
+	MarcaRepository marcaRepository;
 
 	@Mock
-	private MotorRepository motorRepository;
+	MotorRepository motorRepository;
 
 	// Service
 	@Autowired
 	@InjectMocks
-	private CarroService carroService;
+	CarroService carroService;
 
 	// Testes
 
@@ -67,7 +67,7 @@ public class CarroServiceTest {
 		carroService.register(carroDTO);
 		// Assert: verificar se o carro foi salvo com os componentes corretos
 		ArgumentCaptor<Carro> captor = ArgumentCaptor.forClass(Carro.class);
-		verify(carroRepository).saveAndFlush(captor.capture());
+		verify(carroRepository).save(captor.capture());
 		Carro carroSalvo = captor.getValue();
 		assertThat(carroSalvo.getMarca()).isEqualTo(marca);
 		assertThat(carroSalvo.getMotor()).isEqualTo(motor);
